@@ -9,16 +9,16 @@ enum DishCategory {
         DishCategory.soup => 'Canh',
       };
 
-  String get emoji => switch (this) {
-        DishCategory.main => '🍖',
-        DishCategory.side => '🥬',
-        DishCategory.soup => '🍲',
+  int get tintValue => switch (this) {
+        DishCategory.main => 0xFFFFF2EF,
+        DishCategory.side => 0xFFF0F7F1,
+        DishCategory.soup => 0xFFEEF5FC,
       };
 
-  int get tintValue => switch (this) {
-        DishCategory.main => 0xFFFFEFEF,
-        DishCategory.side => 0xFFEDF8ED,
-        DishCategory.soup => 0xFFEAF3FF,
+  int get accentValue => switch (this) {
+        DishCategory.main => 0xFFA75543,
+        DishCategory.side => 0xFF4E7656,
+        DishCategory.soup => 0xFF456F9E,
       };
 }
 

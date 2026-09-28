@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/dish.dart';
 import '../state/app_controller.dart';
+import '../ui/category_icon.dart';
 
 class DishListScreen extends StatelessWidget {
   const DishListScreen({
@@ -67,7 +68,7 @@ class DishListScreen extends StatelessWidget {
       ),
     );
 
-    final name = nameController.text.trim();
+    final name = nameController.text;
     nameController.dispose();
 
     if (action == 'delete' && dish != null) {
@@ -75,7 +76,7 @@ class DishListScreen extends StatelessWidget {
       return;
     }
 
-    if (action != 'save' || name.isEmpty) return;
+    if (action != 'save' || name.trim().isEmpty) return;
 
     if (dish == null) {
       await controller.addDish(name, selectedCategory);
@@ -99,36 +100,57 @@ class DishListScreen extends StatelessWidget {
             actions: [
               TextButton.icon(
                 onPressed: () => _openEditor(context),
-                icon: const Icon(Icons.add),
+                icon: const Icon(Icons.add_rounded, size: 20),
                 label: const Text('Thêm'),
               ),
+              const SizedBox(width: 6),
             ],
           ),
           body: dishes.isEmpty
               ? Center(
                   child: FilledButton.icon(
                     onPressed: () => _openEditor(context),
-                    icon: const Icon(Icons.add),
+                    icon: const Icon(Icons.add_rounded),
                     label: const Text('Thêm món đầu tiên'),
                   ),
                 )
               : ListView.separated(
-                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
+                  padding: const EdgeInsets.fromLTRB(16, 6, 16, 24),
                   itemCount: dishes.length,
-                  separatorBuilder: (_, _) => const Divider(height: 1),
+                  separatorBuilder: (_, _) => const Divider(),
                   itemBuilder: (context, index) {
                     final dish = dishes[index];
+                    final accent = Color(dish.category.accentValue);
+
                     return ListTile(
-                      contentPadding: const EdgeInsets.symmetric(horizontal: 8),
-                      leading: Text(
-                        dish.category.emoji,
-                        style: const TextStyle(fontSize: 24),
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 2,
+                        vertical: 3,
+                      ),
+                      leading: Container(
+                        width: 38,
+                        height: 38,
+                        decoration: BoxDecoration(
+                          color: Color(dish.category.tintValue),
+                          borderRadius: BorderRadius.circular(11),
+                        ),
+                        child: Icon(
+                          categoryIcon(dish.category),
+                          size: 20,
+                          color: accent,
+                        ),
                       ),
                       title: Text(
                         dish.name,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
                         style: TextStyle(
+                          fontSize: 16,
+                          height: 1.3,
                           fontWeight: FontWeight.w600,
-                          color: dish.enabled ? null : Colors.grey,
+                          color: dish.enabled
+                              ? const Color(0xFF20242A)
+                              : const Color(0xFF9198A3),
                         ),
                       ),
                       onTap: () => _openEditor(context, dish),

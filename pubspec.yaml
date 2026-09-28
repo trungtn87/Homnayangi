@@ -1,7 +1,7 @@
 name: hom_nay_an_gi
 description: Ứng dụng quay thực đơn kiểu slot machine, lưu dữ liệu cục bộ.
 publish_to: "none"
-version: 0.1.0+1
+version: 0.1.1+2
 
 environment:
   sdk: ">=3.9.0 <4.0.0"
@@ -10,6 +10,7 @@ dependencies:
   flutter:
     sdk: flutter
   shared_preferences: ^2.5.5
+  unorm_dart: ^0.3.2
 
 dev_dependencies:
   flutter_test:

@@ -85,18 +85,18 @@ class _HomeScreenState extends State<HomeScreen> {
         final finalSelection = _pendingSelection;
 
         return ListView(
-          padding: const EdgeInsets.fromLTRB(16, 20, 16, 24),
+          padding: const EdgeInsets.fromLTRB(18, 22, 18, 24),
           children: [
-            const Text(
+            Text(
               'Hôm nay ăn gì?',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w900),
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 6),
             const Text(
               'Quay một lần để chọn món chính, món phụ và canh.',
               style: TextStyle(color: Color(0xFF68717D)),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 22),
             Card(
               child: Padding(
                 padding: const EdgeInsets.all(12),
@@ -138,15 +138,20 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const SizedBox(height: 14),
             SizedBox(
-              height: 54,
+              height: 52,
               child: FilledButton.icon(
                 onPressed: _isSpinning ? null : _spin,
-                icon: Icon(_isSpinning ? Icons.hourglass_top : Icons.casino),
+                icon: Icon(
+                  _isSpinning
+                      ? Icons.hourglass_top_rounded
+                      : Icons.casino_rounded,
+                  size: 21,
+                ),
                 label: Text(
-                  _isSpinning ? 'Đang quay...' : 'QUAY THỰC ĐƠN',
+                  _isSpinning ? 'Đang quay...' : 'Quay thực đơn',
                   style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
                   ),
                 ),
               ),

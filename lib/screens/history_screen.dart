@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/dish.dart';
 import '../models/meal.dart';
 import '../state/app_controller.dart';
+import '../ui/category_icon.dart';
 
 class HistoryScreen extends StatelessWidget {
   const HistoryScreen({super.key, required this.controller});
@@ -42,7 +43,7 @@ class HistoryScreen extends StatelessWidget {
                 await controller.deleteMeal(meal.id);
                 if (sheetContext.mounted) Navigator.pop(sheetContext);
               },
-              icon: const Icon(Icons.delete_outline),
+              icon: const Icon(Icons.delete_outline_rounded),
               label: const Text('Xóa thực đơn này'),
             ),
           ],
@@ -59,24 +60,24 @@ class HistoryScreen extends StatelessWidget {
         final history = controller.history;
 
         return ListView(
-          padding: const EdgeInsets.fromLTRB(16, 20, 16, 24),
+          padding: const EdgeInsets.fromLTRB(18, 22, 18, 24),
           children: [
-            const Text(
+            Text(
               'Lịch sử thực đơn',
-              style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 6),
             const Text(
               'Các thực đơn bạn đã chốt sẽ được lưu tại đây.',
               style: TextStyle(color: Color(0xFF68717D)),
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 20),
             if (history.isEmpty)
               const Padding(
                 padding: EdgeInsets.only(top: 72),
                 child: Column(
                   children: [
-                    Icon(Icons.history, size: 48, color: Color(0xFFB5BBC4)),
+                    Icon(Icons.history_rounded, size: 44, color: Color(0xFFB5BBC4)),
                     SizedBox(height: 10),
                     Text(
                       'Chưa có thực đơn nào được lưu.',
@@ -88,7 +89,7 @@ class HistoryScreen extends StatelessWidget {
             for (final meal in history) ...[
               Card(
                 child: InkWell(
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(16),
                   onTap: () => _showMeal(context, meal),
                   child: Padding(
                     padding: const EdgeInsets.all(14),
@@ -103,11 +104,20 @@ class HistoryScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Text('🍖  ${meal.mainDish}'),
-                        const SizedBox(height: 5),
-                        Text('🥬  ${meal.sideDish}'),
-                        const SizedBox(height: 5),
-                        Text('🍲  ${meal.soup}'),
+                        _CompactDishRow(
+                          category: DishCategory.main,
+                          name: meal.mainDish,
+                        ),
+                        const SizedBox(height: 7),
+                        _CompactDishRow(
+                          category: DishCategory.side,
+                          name: meal.sideDish,
+                        ),
+                        const SizedBox(height: 7),
+                        _CompactDishRow(
+                          category: DishCategory.soup,
+                          name: meal.soup,
+                        ),
                       ],
                     ),
                   ),
@@ -122,6 +132,37 @@ class HistoryScreen extends StatelessWidget {
   }
 }
 
+class _CompactDishRow extends StatelessWidget {
+  const _CompactDishRow({required this.category, required this.name});
+
+  final DishCategory category;
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Icon(
+          categoryIcon(category),
+          size: 18,
+          color: Color(category.accentValue),
+        ),
+        const SizedBox(width: 9),
+        Expanded(
+          child: Text(
+            name,
+            style: const TextStyle(
+              fontSize: 14,
+              height: 1.3,
+              fontWeight: FontWeight.w500,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _HistoryDish extends StatelessWidget {
   const _HistoryDish({required this.category, required this.name});
 
@@ -131,17 +172,27 @@ class _HistoryDish extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
       decoration: BoxDecoration(
         color: Color(category.tintValue),
         borderRadius: BorderRadius.circular(12),
       ),
       child: Row(
         children: [
-          Text(category.emoji, style: const TextStyle(fontSize: 22)),
+          Icon(
+            categoryIcon(category),
+            size: 21,
+            color: Color(category.accentValue),
+          ),
           const SizedBox(width: 10),
           Expanded(
-            child: Text(name, style: const TextStyle(fontWeight: FontWeight.w700)),
+            child: Text(
+              name,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
           ),
         ],
       ),
