@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/dish.dart';
 import '../services/meal_randomizer.dart';
+import '../ui/category_icon.dart';
 
 class MealSummaryCard extends StatelessWidget {
   const MealSummaryCard({
@@ -25,11 +26,11 @@ class MealSummaryCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
+            Text(
               'Tổng hợp thực đơn',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w800),
+              style: Theme.of(context).textTheme.titleLarge,
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 14),
             _SummaryRow(
               category: DishCategory.main,
               name: selection.mainDish.name,
@@ -47,13 +48,13 @@ class MealSummaryCard extends StatelessWidget {
             const SizedBox(height: 16),
             FilledButton.icon(
               onPressed: saved ? null : onSave,
-              icon: Icon(saved ? Icons.check_circle : Icons.check),
+              icon: Icon(saved ? Icons.check_circle_rounded : Icons.check_rounded),
               label: Text(saved ? 'Đã lưu thực đơn' : 'Chốt thực đơn'),
             ),
             const SizedBox(height: 8),
             OutlinedButton.icon(
               onPressed: onSpinAgain,
-              icon: const Icon(Icons.refresh),
+              icon: const Icon(Icons.refresh_rounded),
               label: const Text('Quay lại'),
             ),
           ],
@@ -79,7 +80,19 @@ class _SummaryRow extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Text(category.emoji, style: const TextStyle(fontSize: 22)),
+          Container(
+            width: 36,
+            height: 36,
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.75),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Icon(
+              categoryIcon(category),
+              size: 19,
+              color: Color(category.accentValue),
+            ),
+          ),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
@@ -87,11 +100,19 @@ class _SummaryRow extends StatelessWidget {
               children: [
                 Text(
                   category.label,
-                  style: const TextStyle(fontSize: 12, color: Color(0xFF68717D)),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    color: Color(0xFF68717D),
+                  ),
                 ),
+                const SizedBox(height: 1),
                 Text(
                   name,
-                  style: const TextStyle(fontWeight: FontWeight.w700),
+                  style: const TextStyle(
+                    fontSize: 15,
+                    height: 1.3,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ],
             ),
