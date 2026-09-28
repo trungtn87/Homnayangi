@@ -18,7 +18,9 @@ jobs:
           cache: true
 
       - name: Generate Android host project
-        run: flutter create . --platforms=android --project-name=hom_nay_an_gi --org=com.trungtn87
+        run: |
+          flutter create . --empty --platforms=android --project-name=hom_nay_an_gi --org=com.trungtn87
+          rm -f test/widget_test.dart
 
       - name: Install dependencies
         run: flutter pub get
