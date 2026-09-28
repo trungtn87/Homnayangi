@@ -29,12 +29,11 @@ Yêu cầu Flutter stable hiện tại (Dart 3.9+).
 ```bash
 git clone https://github.com/trungtn87/Homnayangi.git
 cd Homnayangi
-flutter pub get
-flutter create . --platforms=android --project-name=hom_nay_an_gi --org=com.trungtn87
+bash tool/bootstrap_android.sh
 flutter run
 ```
 
-Lệnh `flutter create` chỉ tạo phần host Android còn thiếu; code ứng dụng trong `lib/` được giữ nguyên.
+Script `tool/bootstrap_android.sh` chỉ tạo phần host Android còn thiếu bằng template tối giản, sau đó chạy `flutter analyze` và `flutter test`; code ứng dụng trong `lib/` được giữ nguyên.
 
 ## Build APK
 
