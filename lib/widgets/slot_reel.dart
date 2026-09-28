@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../models/dish.dart';
 
@@ -53,7 +54,8 @@ class _SlotReelState extends State<SlotReel> {
     if (widget.options.isEmpty) return;
 
     setState(() => _running = true);
-    _timer = Timer.periodic(const Duration(milliseconds: 85), (_) {
+
+    _timer = Timer.periodic(const Duration(milliseconds: 90), (_) {
       if (!mounted || widget.options.isEmpty) return;
       setState(() {
         _currentIndex = (_currentIndex + 1) % widget.options.length;
@@ -72,6 +74,7 @@ class _SlotReelState extends State<SlotReel> {
         if (targetIndex >= 0) _currentIndex = targetIndex;
         _running = false;
       });
+      HapticFeedback.selectionClick();
     });
   }
 
@@ -187,29 +190,54 @@ class _ReelCell extends StatelessWidget {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  category.emoji,
-                  style: TextStyle(fontSize: center ? 25 : 18),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  dish?.name ?? 'Chưa có món',
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: center ? 13 : 11,
-                    height: 1.05,
-                    fontWeight: center ? FontWeight.w700 : FontWeight.w500,
-                    color: spinning && center
-                        ? const Color(0xFF566171)
-                        : const Color(0xFF20242A),
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 85),
+              transitionBuilder: (child, animation) {
+                final position = Tween<Offset>(
+                  begin: const Offset(0, -0.35),
+                  end: Offset.zero,
+                ).animate(
+                  CurvedAnimation(
+                    parent: animation,
+                    curve: Curves.easeOut,
                   ),
+                );
+                return ClipRect(
+                  child: SlideTransition(
+                    position: position,
+                    child: FadeTransition(opacity: animation, child: child),
+                  ),
+                );
+              },
+              child: Column(
+                key: ValueKey(
+                  (dish?.id ?? 'empty') +
+                      (center ? '_center' : '_outer') +
+                      (muted ? '_muted' : '_solid'),
                 ),
-              ],
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    category.emoji,
+                    style: TextStyle(fontSize: center ? 25 : 18),
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    dish?.name ?? 'Chưa có món',
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: center ? 13 : 11,
+                      height: 1.05,
+                      fontWeight: center ? FontWeight.w700 : FontWeight.w500,
+                      color: spinning && center
+                          ? const Color(0xFF566171)
+                          : const Color(0xFF20242A),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
