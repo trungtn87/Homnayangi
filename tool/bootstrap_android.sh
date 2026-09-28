@@ -4,7 +4,8 @@ set -euo pipefail
 flutter pub get
 
 if [ ! -d "android" ]; then
-  flutter create .     --platforms=android     --project-name=hom_nay_an_gi     --org=com.trungtn87
+  flutter create .     --empty     --platforms=android     --project-name=hom_nay_an_gi     --org=com.trungtn87
+  rm -f test/widget_test.dart
 fi
 
 flutter pub get
