@@ -9,9 +9,10 @@ class LocalStore {
   static const _dishesKey = 'dishes_v1';
   static const _historyKey = 'meal_history_v1';
 
+  final SharedPreferencesAsync _prefs = SharedPreferencesAsync();
+
   Future<List<Dish>> loadDishes() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(_dishesKey);
+    final raw = await _prefs.getString(_dishesKey);
     if (raw == null || raw.isEmpty) return _defaultDishes();
 
     final decoded = jsonDecode(raw) as List<dynamic>;
@@ -21,16 +22,14 @@ class LocalStore {
   }
 
   Future<void> saveDishes(List<Dish> dishes) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
+    await _prefs.setString(
       _dishesKey,
       jsonEncode(dishes.map((dish) => dish.toJson()).toList()),
     );
   }
 
   Future<List<Meal>> loadHistory() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(_historyKey);
+    final raw = await _prefs.getString(_historyKey);
     if (raw == null || raw.isEmpty) return [];
 
     final decoded = jsonDecode(raw) as List<dynamic>;
@@ -40,8 +39,7 @@ class LocalStore {
   }
 
   Future<void> saveHistory(List<Meal> history) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
+    await _prefs.setString(
       _historyKey,
       jsonEncode(history.map((meal) => meal.toJson()).toList()),
     );
