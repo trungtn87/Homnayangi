@@ -4,6 +4,7 @@ import '../data/local_store.dart';
 import '../models/dish.dart';
 import '../models/meal.dart';
 import '../services/meal_randomizer.dart';
+import '../utils/text_normalizer.dart';
 
 class AppController extends ChangeNotifier {
   AppController(this._store);
@@ -36,13 +37,13 @@ class AppController extends ChangeNotifier {
       );
 
   Future<void> addDish(String name, DishCategory category) async {
-    final trimmed = name.trim();
-    if (trimmed.isEmpty) return;
+    final normalized = normalizeUserText(name);
+    if (normalized.isEmpty) return;
 
     _dishes.add(
       Dish(
         id: DateTime.now().microsecondsSinceEpoch.toString(),
-        name: trimmed,
+        name: normalized,
         category: category,
       ),
     );
@@ -52,7 +53,11 @@ class AppController extends ChangeNotifier {
   Future<void> updateDish(Dish updated) async {
     final index = _dishes.indexWhere((dish) => dish.id == updated.id);
     if (index == -1) return;
-    _dishes[index] = updated;
+
+    final normalized = normalizeUserText(updated.name);
+    if (normalized.isEmpty) return;
+
+    _dishes[index] = updated.copyWith(name: normalized);
     await _persistDishes();
   }
 
@@ -68,9 +73,9 @@ class AppController extends ChangeNotifier {
   Future<void> saveMeal(MealSelection selection) async {
     final meal = Meal(
       id: DateTime.now().microsecondsSinceEpoch.toString(),
-      mainDish: selection.mainDish.name,
-      sideDish: selection.sideDish.name,
-      soup: selection.soup.name,
+      mainDish: normalizeUserText(selection.mainDish.name),
+      sideDish: normalizeUserText(selection.sideDish.name),
+      soup: normalizeUserText(selection.soup.name),
       createdAt: DateTime.now(),
     );
     _history.insert(0, meal);
