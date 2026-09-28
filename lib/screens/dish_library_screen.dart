@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/dish.dart';
 import '../state/app_controller.dart';
+import '../ui/category_icon.dart';
 import 'dish_list_screen.dart';
 
 class DishLibraryScreen extends StatelessWidget {
@@ -70,18 +71,18 @@ class DishLibraryScreen extends StatelessWidget {
       animation: controller,
       builder: (context, _) {
         return ListView(
-          padding: const EdgeInsets.fromLTRB(16, 20, 16, 24),
+          padding: const EdgeInsets.fromLTRB(18, 22, 18, 24),
           children: [
-            const Text(
+            Text(
               'Kho món ăn',
-              style: TextStyle(fontSize: 26, fontWeight: FontWeight.w900),
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 6),
             const Text(
               'Chỉ các món đang bật mới xuất hiện khi quay.',
               style: TextStyle(color: Color(0xFF68717D)),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 22),
             for (final category in DishCategory.values) ...[
               _CategoryCard(
                 category: category,
@@ -98,12 +99,12 @@ class DishLibraryScreen extends StatelessWidget {
                   );
                 },
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 12),
             ],
-            const SizedBox(height: 8),
+            const SizedBox(height: 4),
             OutlinedButton.icon(
               onPressed: () => _quickAdd(context),
-              icon: const Icon(Icons.add),
+              icon: const Icon(Icons.add_rounded),
               label: const Text('Thêm món nhanh'),
             ),
           ],
@@ -128,6 +129,8 @@ class _CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final accent = Color(category.accentValue);
+
     return Material(
       color: Color(category.tintValue),
       borderRadius: BorderRadius.circular(16),
@@ -135,10 +138,18 @@ class _CategoryCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(16),
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
           child: Row(
             children: [
-              Text(category.emoji, style: const TextStyle(fontSize: 32)),
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.72),
+                  borderRadius: BorderRadius.circular(13),
+                ),
+                child: Icon(categoryIcon(category), color: accent, size: 23),
+              ),
               const SizedBox(width: 14),
               Expanded(
                 child: Column(
@@ -147,18 +158,22 @@ class _CategoryCard extends StatelessWidget {
                     Text(
                       category.label,
                       style: const TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.w800,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
+                    const SizedBox(height: 2),
                     Text(
                       '$enabled/$total món đang bật',
-                      style: const TextStyle(color: Color(0xFF68717D)),
+                      style: const TextStyle(
+                        fontSize: 13,
+                        color: Color(0xFF68717D),
+                      ),
                     ),
                   ],
                 ),
               ),
-              const Icon(Icons.chevron_right),
+              Icon(Icons.chevron_right_rounded, color: accent),
             ],
           ),
         ),
