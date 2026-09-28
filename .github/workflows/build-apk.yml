@@ -16,7 +16,8 @@ jobs:
 
       - name: Generate Android host project
         run: |
-          flutter create . --platforms=android --project-name=hom_nay_an_gi --org=com.trungtn87
+          flutter create . --empty --platforms=android --project-name=hom_nay_an_gi --org=com.trungtn87
+          rm -f test/widget_test.dart
           flutter pub get
 
       - name: Analyze
