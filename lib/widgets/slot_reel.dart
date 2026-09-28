@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../models/dish.dart';
+import '../ui/category_icon.dart';
 
 class SlotReel extends StatefulWidget {
   const SlotReel({
@@ -123,14 +124,14 @@ class _SlotReelState extends State<SlotReel> {
           children: [
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 6),
+              padding: const EdgeInsets.symmetric(vertical: 9, horizontal: 5),
               color: tint,
               child: Text(
                 widget.category.label,
                 textAlign: TextAlign.center,
                 style: const TextStyle(
                   fontWeight: FontWeight.w700,
-                  fontSize: 13,
+                  fontSize: 12,
                 ),
               ),
             ),
@@ -183,10 +184,10 @@ class _ReelCell extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: center ? 78 : 58,
+      height: center ? 78 : 56,
       child: AnimatedOpacity(
         duration: const Duration(milliseconds: 80),
-        opacity: muted ? 0.36 : 1,
+        opacity: muted ? 0.34 : 1,
         child: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6),
@@ -217,20 +218,21 @@ class _ReelCell extends StatelessWidget {
                 ),
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    category.emoji,
-                    style: TextStyle(fontSize: center ? 25 : 18),
+                  Icon(
+                    categoryIcon(category),
+                    size: center ? 22 : 17,
+                    color: Color(category.accentValue),
                   ),
-                  const SizedBox(height: 3),
+                  const SizedBox(height: 5),
                   Text(
                     dish?.name ?? 'Chưa có món',
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                      fontSize: center ? 13 : 11,
-                      height: 1.05,
-                      fontWeight: center ? FontWeight.w700 : FontWeight.w500,
+                      fontSize: center ? 12 : 10.5,
+                      height: 1.12,
+                      fontWeight: center ? FontWeight.w600 : FontWeight.w500,
                       color: spinning && center
                           ? const Color(0xFF566171)
                           : const Color(0xFF20242A),
