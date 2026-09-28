@@ -25,7 +25,7 @@ class MealSpinnerApp extends StatelessWidget {
           margin: EdgeInsets.zero,
           color: Colors.white,
         ),
-        inputDecorationTheme: const InputDecorationTheme(
+        inputDecorationTheme: const InputDecorationThemeData(
           border: OutlineInputBorder(),
         ),
       ),
