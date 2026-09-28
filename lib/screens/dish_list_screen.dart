@@ -115,7 +115,7 @@ class DishListScreen extends StatelessWidget {
               : ListView.separated(
                   padding: const EdgeInsets.fromLTRB(12, 8, 12, 24),
                   itemCount: dishes.length,
-                  separatorBuilder: (_, __) => const Divider(height: 1),
+                  separatorBuilder: (_, _) => const Divider(height: 1),
                   itemBuilder: (context, index) {
                     final dish = dishes[index];
                     return ListTile(
