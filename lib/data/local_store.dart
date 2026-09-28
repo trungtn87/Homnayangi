@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/dish.dart';
 import '../models/meal.dart';
+import '../utils/text_normalizer.dart';
 
 class LocalStore {
   static const _dishesKey = 'dishes_v1';
@@ -16,9 +17,19 @@ class LocalStore {
     if (raw == null || raw.isEmpty) return _defaultDishes();
 
     final decoded = jsonDecode(raw) as List<dynamic>;
-    return decoded
+    final dishes = decoded
         .map((item) => Dish.fromJson(item as Map<String, dynamic>))
         .toList();
+
+    var changed = false;
+    final normalized = dishes.map((dish) {
+      final name = normalizeUserText(dish.name);
+      if (name != dish.name) changed = true;
+      return dish.copyWith(name: name);
+    }).toList();
+
+    if (changed) await saveDishes(normalized);
+    return normalized;
   }
 
   Future<void> saveDishes(List<Dish> dishes) async {
@@ -33,9 +44,33 @@ class LocalStore {
     if (raw == null || raw.isEmpty) return [];
 
     final decoded = jsonDecode(raw) as List<dynamic>;
-    return decoded
+    final history = decoded
         .map((item) => Meal.fromJson(item as Map<String, dynamic>))
         .toList();
+
+    var changed = false;
+    final normalized = history.map((meal) {
+      final mainDish = normalizeUserText(meal.mainDish);
+      final sideDish = normalizeUserText(meal.sideDish);
+      final soup = normalizeUserText(meal.soup);
+
+      if (mainDish != meal.mainDish ||
+          sideDish != meal.sideDish ||
+          soup != meal.soup) {
+        changed = true;
+      }
+
+      return Meal(
+        id: meal.id,
+        mainDish: mainDish,
+        sideDish: sideDish,
+        soup: soup,
+        createdAt: meal.createdAt,
+      );
+    }).toList();
+
+    if (changed) await saveHistory(normalized);
+    return normalized;
   }
 
   Future<void> saveHistory(List<Meal> history) async {
