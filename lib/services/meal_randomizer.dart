@@ -25,7 +25,7 @@ class MealRandomizer {
         .toList();
 
     if (candidates.isEmpty) {
-      throw StateError('Không có món đang bật trong nhóm ' + category.label + '.');
+      throw StateError('Không có món đang bật trong nhóm ${category.label}.');
     }
 
     return candidates[_random.nextInt(candidates.length)];

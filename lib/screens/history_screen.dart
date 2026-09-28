@@ -11,15 +11,8 @@ class HistoryScreen extends StatelessWidget {
 
   String _formatDate(DateTime date) {
     String two(int value) => value.toString().padLeft(2, '0');
-    return two(date.day) +
-        '/' +
-        two(date.month) +
-        '/' +
-        date.year.toString() +
-        ' ' +
-        two(date.hour) +
-        ':' +
-        two(date.minute);
+    return '${two(date.day)}/${two(date.month)}/${date.year} '
+        '${two(date.hour)}:${two(date.minute)}';
   }
 
   Future<void> _showMeal(BuildContext context, Meal meal) async {
@@ -110,11 +103,11 @@ class HistoryScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        Text('🍖  ' + meal.mainDish),
+                        Text('🍖  ${meal.mainDish}'),
                         const SizedBox(height: 5),
-                        Text('🥬  ' + meal.sideDish),
+                        Text('🥬  ${meal.sideDish}'),
                         const SizedBox(height: 5),
-                        Text('🍲  ' + meal.soup),
+                        Text('🍲  ${meal.soup}'),
                       ],
                     ),
                   ),

@@ -14,7 +14,7 @@ Người dùng tự thêm món, bật/tắt món nào được tham gia quay, qu
 - Kho món chia 3 nhóm: món chính, món phụ, canh.
 - Thêm / sửa / xóa món.
 - Bật / tắt món mà không cần xóa.
-- Lưu dữ liệu hoàn toàn trên điện thoại bằng SharedPreferences.
+- Lưu dữ liệu hoàn toàn trên điện thoại bằng SharedPreferencesAsync.
 - Ô tổng hợp kết quả ngay sau khi quay.
 - Chốt thực đơn vào lịch sử.
 - Xem và xóa từng thực đơn cũ.
@@ -24,7 +24,7 @@ Người dùng tự thêm món, bật/tắt món nào được tham gia quay, qu
 
 ## Chạy trên máy
 
-Yêu cầu đã cài Flutter SDK.
+Yêu cầu Flutter stable hiện tại (Dart 3.9+).
 
 ```bash
 git clone https://github.com/trungtn87/Homnayangi.git
