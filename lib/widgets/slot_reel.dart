@@ -80,10 +80,12 @@ class _SlotReelState extends State<SlotReel> {
       _currentIndex = 0;
       return;
     }
+
     if (widget.finalDish == null) {
-      _currentIndex = _currentIndex.clamp(0, widget.options.length - 1);
+      if (_currentIndex >= widget.options.length) _currentIndex = 0;
       return;
     }
+
     final index = widget.options.indexWhere((dish) => dish.id == widget.finalDish!.id);
     if (index >= 0) _currentIndex = index;
   }
